@@ -36,4 +36,17 @@ impl Block{
         let serialized_header = bincode::serialize(&self.header).unwrap();
         sha256(&serialized_header)
     }
+
+    
+    pub fn next(previous: &Block) -> Self{
+        Block{
+            header: BlockHeader { 
+                version: 1,
+                previous_hash: previous.hash(), 
+                merkle_root: zero_hash(), 
+                timestamp: previous.header.timestamp + 1,
+                difficulty: 0,
+                nonce: 0 }
+        }
+    }
 }
