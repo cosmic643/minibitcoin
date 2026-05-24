@@ -14,3 +14,7 @@ pub fn sha256(data: &[u8]) -> Hash256{
 
     hash
 }
+
+pub fn hash_to_hex(hash: &Hash256) -> String{
+    hex::encode(hash)
+}
