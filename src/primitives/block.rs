@@ -1,4 +1,5 @@
-use crate::primitives::hash::{Hash256, zero_hash};
+use crate::primitives::hash::{Hash256, zero_hash, hash_to_hex};
+use crate::consensus::pow::{is_valid_pow};
 use serde::{Serialize, Deserialize};
 use crate::primitives::hash::sha256;
 use bincode;
@@ -26,7 +27,7 @@ impl Block{
                 previous_hash: zero_hash(),
                 merkle_root: zero_hash(),
                 timestamp: 0,
-                difficulty: 0,
+                difficulty: 4,
                 nonce: 0,
             },
         }
@@ -39,14 +40,26 @@ impl Block{
 
     
     pub fn next(previous: &Block) -> Self{
-        Block{
+        let mut block =Block{
             header: BlockHeader { 
                 version: 1,
                 previous_hash: previous.hash(), 
                 merkle_root: zero_hash(), 
                 timestamp: previous.header.timestamp + 1,
-                difficulty: 0,
+                difficulty: previous.header.difficulty,
                 nonce: 0 }
+        };
+        block.mine();
+        block
+    }
+
+    pub fn mine(&mut self){
+        loop{
+            let block_hash = hash_to_hex(&self.hash());
+            if is_valid_pow(&block_hash, self.header.difficulty){
+                break;
+            }
+            self.header.nonce += 1;
         }
     }
 }

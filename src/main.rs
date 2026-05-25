@@ -3,6 +3,10 @@ use minibitcoin::chain::blockchain::Blockchain;
 
 fn main() {
 
+
+
+    
+
     let mut blockchain = Blockchain::new();
     blockchain.add_block();
     blockchain.add_block();
