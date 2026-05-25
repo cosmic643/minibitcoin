@@ -1,4 +1,4 @@
-use crate::primitives::block::Block;
+use crate::primitives::{block::Block};
 
 pub struct Blockchain{
     pub blocks: Vec<Block>,
@@ -20,5 +20,15 @@ impl Blockchain{
         self.blocks.push(new_block);
     }
 
-    
+    pub fn validate_chain(&self) -> bool{
+        for i in 1..self.blocks.len(){
+            let current = &self.blocks[i];
+            let previous = &self.blocks[i-1];
+
+            if current.header.previous_hash != previous.hash(){
+                return false;
+            }
+        }
+        true
+    }
 }

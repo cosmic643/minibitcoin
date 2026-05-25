@@ -37,4 +37,6 @@ fn main() {
         println!("Previous Block Hash: {}",hash_to_hex(&block.header.previous_hash));
         println!("-----------------------");
     }
+
+    println!("{}", blockchain.validate_chain());
 }
